@@ -1,6 +1,8 @@
 {
-  "name": "AURELIUS & BLADE | Luxury Barbershop & Grooming Lounge",
+  "name": "MWINGI HOME BOYZ | Luxury Barbershop & Grooming Lounge",
   "description": "Premier luxury barbershop with bespoke hair and beard styling, restorative facial treatments, real-time appointment booking, automated SMS/email reminders, prestige loyalty club, e-commerce apothecary, and executive management.",
   "requestFramePermissions": [],
-  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
 }

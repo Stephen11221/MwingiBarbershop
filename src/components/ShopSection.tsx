@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Product } from '../types.ts';
-import { Star, Check, Plus, Sparkles } from 'lucide-react';
-import { SHOP_INFO } from '../data/mockData.ts';
+import { Star, Check, Plus, Sparkles, Cog, Award } from 'lucide-react';
+import { SHOP_INFO, GOLD_PRODUCTS_3D_IMAGE } from '../data/mockData.ts';
 
 interface ShopSectionProps {
   products: Product[];
@@ -36,6 +36,45 @@ export const ShopSection: React.FC<ShopSectionProps> = ({
   return (
     <section id="shop" className="py-20 bg-[#0E0E12] border-t border-[#1E1E24] relative z-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* 3D Gold Mechanic Product Series Banner */}
+        <div className="mb-14 rounded-2xl bg-gradient-to-r from-[#14141A] via-[#1F1C14] to-[#14141A] border border-[#DFB76C]/30 overflow-hidden shadow-2xl relative">
+          <div className="grid grid-cols-1 lg:grid-cols-12 items-center">
+            <div className="lg:col-span-6 p-6 sm:p-10 z-10">
+              <div className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#DFB76C] uppercase tracking-[0.2em] mb-2.5">
+                <Cog className="w-3.5 h-3.5 text-[#DFB76C] animate-spin" style={{ animationDuration: '10s' }} />
+                <span>3D Mechanical Gold Edition</span>
+              </div>
+              <h2 className="text-2xl sm:text-4xl font-bold font-serif text-white tracking-tight mb-3">
+                Precision Gold Formulations & Tools
+              </h2>
+              <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed mb-6 font-light max-w-lg">
+                Crafted for lasting hold and effortless wash-out. Formulated with organic Kenyan shea butter, argan extract, and sandalwood essential oils in signature gold-finish canisters.
+              </p>
+              <div className="flex flex-wrap items-center gap-4 text-xs text-[#DFB76C]">
+                <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-black/50 border border-[#DFB76C]/30">
+                  <Award className="w-3.5 h-3.5" />
+                  <span>Certified Home Boyz Formula</span>
+                </div>
+                <div className="text-zinc-400 text-[11px]">
+                  Pick up at salon counter or ship anywhere in Kenya
+                </div>
+              </div>
+            </div>
+
+            <div className="lg:col-span-6 relative h-64 sm:h-72 lg:h-80 overflow-hidden">
+              <img
+                src={GOLD_PRODUCTS_3D_IMAGE}
+                alt="3D Gold Mechanic Barber Grooming Products"
+                referrerPolicy="no-referrer"
+                loading="lazy"
+                decoding="async"
+                className="w-full h-full object-cover object-center filter brightness-95 contrast-105 hover:scale-105 transition-transform duration-700"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t lg:bg-gradient-to-r from-[#14141A] via-transparent to-transparent" />
+            </div>
+          </div>
+        </div>
+
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12">
           <div>
@@ -82,6 +121,8 @@ export const ShopSection: React.FC<ShopSectionProps> = ({
                   src={product.image}
                   alt={product.name}
                   referrerPolicy="no-referrer"
+                  loading="lazy"
+                  decoding="async"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 rounded-lg filter brightness-95"
                 />
                 <div className="absolute top-3 right-3 px-2.5 py-1 rounded-md bg-black/75 backdrop-blur-md border border-zinc-800 text-[11px] font-mono text-zinc-300">

@@ -1,4 +1,4 @@
-import { Service, Barber, GalleryItem, Review, Product, LoyaltyProfile } from '../types.ts';
+import type { Service, Barber, GalleryItem, Review, Product, LoyaltyProfile } from '../types.ts';
 
 export const HERO_IMAGE = '/src/assets/images/mwingi_hero_african_man_1790175777735.jpg';
 export const WAVES_FADE_IMAGE = '/src/assets/images/african_man_waves_fade_1790175807521.jpg';
@@ -6,6 +6,12 @@ export const BEARD_GROOMING_IMAGE = '/src/assets/images/african_man_beard_groomi
 export const BARBER_MASTER_IMAGE = '/src/assets/images/barber_crew_african_master_1790175791861.jpg';
 export const BARBER_FADE_IMAGE = '/src/assets/images/barber_crew_fade_specialist_1790175830491.jpg';
 export const PRODUCT_IMAGE = '/src/assets/images/product_matte_pomade_1790174714855.jpg';
+
+// AI Generated Workers Team & 3D Mechanic Imagery
+export const BARBERSHOP_WORKERS_CREW_IMAGE = '/src/assets/images/barbershop_workers_crew_1790187275142.jpg';
+export const BARBER_WORKER_PORTRAIT_IMAGE = '/src/assets/images/barber_worker_portrait_1790187286839.jpg';
+export const BARBER_3D_MECHANIC_IMAGE = '/src/assets/images/barber_3d_mechanic_1790187297269.jpg';
+export const GOLD_PRODUCTS_3D_IMAGE = '/src/assets/images/gold_products_3d_1790187306460.jpg';
 
 export const SHOP_INFO = {
   name: 'Mwingi Home Boyz Cut',
@@ -166,7 +172,7 @@ export const INITIAL_BARBERS: Barber[] = [
     role: 'Lead Master Barber & Founder',
     experienceYears: 10,
     specialty: 'Executive Precision Cuts, 360 Waves & Skin Fades',
-    image: BARBER_MASTER_IMAGE,
+    image: BARBER_WORKER_PORTRAIT_IMAGE,
     rating: 4.99,
     reviewCount: 380,
     availableDays: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
@@ -190,7 +196,7 @@ export const INITIAL_BARBERS: Barber[] = [
     role: 'Master Shaver & Beard Architect',
     experienceYears: 8,
     specialty: 'Straight Razor Shaves, Beard Dye & Steam Therapy',
-    image: BEARD_GROOMING_IMAGE,
+    image: BARBER_MASTER_IMAGE,
     rating: 4.97,
     reviewCount: 310,
     availableDays: ['Monday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
@@ -202,7 +208,7 @@ export const INITIAL_BARBERS: Barber[] = [
     role: 'Facial Aesthetics & Skin Specialist',
     experienceYears: 6,
     specialty: 'Charcoal Masks, Blackhead Extraction & Ozone Steam',
-    image: WAVES_FADE_IMAGE,
+    image: BARBERSHOP_WORKERS_CREW_IMAGE,
     rating: 4.94,
     reviewCount: 220,
     availableDays: ['Monday', 'Tuesday', 'Thursday', 'Friday', 'Saturday'],
@@ -211,6 +217,16 @@ export const INITIAL_BARBERS: Barber[] = [
 ];
 
 export const INITIAL_GALLERY: GalleryItem[] = [
+  {
+    id: 'gal-crew',
+    title: 'The Master Artisan Workers & Grooming Team',
+    category: 'facials',
+    categoryLabel: 'The Master Crew',
+    barberName: 'The Full Team',
+    image: BARBERSHOP_WORKERS_CREW_IMAGE,
+    description: 'Our licensed master barbers, stylists, and grooming aestheticians on shift at Mwingi Home Boyz Cut.',
+    productUsed: 'Gold Mechanical Razor & Organic Balm'
+  },
   {
     id: 'gal-1',
     title: 'Clean Low Taper Fade & 360 Deep Waves',
@@ -247,7 +263,7 @@ export const INITIAL_GALLERY: GalleryItem[] = [
     category: 'facials',
     categoryLabel: 'Crew at Work',
     barberName: 'The Crew',
-    image: BARBER_MASTER_IMAGE,
+    image: BARBER_WORKER_PORTRAIT_IMAGE,
     description: 'Professional barber tools, sterilized blades, and welcoming atmosphere.',
     productUsed: 'Sterilized Feather Blades'
   }

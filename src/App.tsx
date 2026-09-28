@@ -34,6 +34,10 @@ import { AdminDashboard } from './components/AdminDashboard.tsx';
 import { WhatsAppFloatingButton } from './components/WhatsAppFloatingButton.tsx';
 import { Footer } from './components/Footer.tsx';
 
+// New Staff Management System components
+import { PublicClockPage } from './components/PublicClockPage.tsx';
+import { AdminStaffPage } from './components/AdminStaffPage.tsx';
+
 export default function App() {
   const [services, setServices] = useState<Service[]>(INITIAL_SERVICES);
   const [barbers, setBarbers] = useState<Barber[]>(INITIAL_BARBERS);
@@ -41,6 +45,44 @@ export default function App() {
   const [products, setProducts] = useState<Product[]>(INITIAL_PRODUCTS);
   const [reviews, setReviews] = useState<Review[]>(INITIAL_REVIEWS);
   const [appointments, setAppointments] = useState<Appointment[]>([]);
+
+  // Navigation page routing: 'main' | 'clock' | 'admin-staff'
+  const [currentPage, setCurrentPage] = useState<'main' | 'clock' | 'admin-staff'>(() => {
+    if (typeof window !== 'undefined') {
+      const path = window.location.pathname.toLowerCase();
+      if (path === '/clock' || path.startsWith('/clock/')) return 'clock';
+      if (path === '/admin/staff' || path.startsWith('/admin/staff/')) return 'admin-staff';
+    }
+    return 'main';
+  });
+
+  // Listen to popstate (Back/Forward browser buttons)
+  useEffect(() => {
+    const handlePopState = () => {
+      const path = window.location.pathname.toLowerCase();
+      if (path === '/clock' || path.startsWith('/clock/')) {
+        setCurrentPage('clock');
+      } else if (path === '/admin/staff' || path.startsWith('/admin/staff/')) {
+        setCurrentPage('admin-staff');
+      } else {
+        setCurrentPage('main');
+      }
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+
+  const navigateTo = (page: 'main' | 'clock' | 'admin-staff') => {
+    setCurrentPage(page);
+    let targetPath = '/';
+    if (page === 'clock') targetPath = '/clock';
+    if (page === 'admin-staff') targetPath = '/admin/staff';
+
+    if (window.location.pathname !== targetPath) {
+      window.history.pushState({}, '', targetPath);
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   // Section Grouping & Filtering state
   const [activeGroupSection, setActiveGroupSection] = useState<GroupSectionId>('all');
@@ -189,6 +231,27 @@ export default function App() {
 
   const totalCartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
 
+  // ROUTE 1: PUBLIC CLOCK PAGE at /clock
+  if (currentPage === 'clock') {
+    return (
+      <PublicClockPage
+        onBackToMain={() => navigateTo('main')}
+        onNavigateAdminStaff={() => navigateTo('admin-staff')}
+      />
+    );
+  }
+
+  // ROUTE 2: ADMIN STAFF PAGE at /admin/staff
+  if (currentPage === 'admin-staff') {
+    return (
+      <AdminStaffPage
+        onBackToMain={() => navigateTo('main')}
+        onNavigateClock={() => navigateTo('clock')}
+      />
+    );
+  }
+
+  // ROUTE 3: MAIN LOUNGE APPLICATION
   return (
     <div className="relative min-h-screen bg-[#0B0B0D] text-[#E4E4E7] flex flex-col font-sans selection:bg-[#C5A059]/30 selection:text-[#F4E8C1] overflow-x-hidden">
       {/* 3D WebGL Scroll Animation in Background */}
@@ -205,6 +268,8 @@ export default function App() {
         }}
         onOpenTracking={() => setIsTrackingOpen(true)}
         onOpenAdmin={() => setIsAdminOpen(true)}
+        onNavigateClock={() => navigateTo('clock')}
+        onNavigateAdminStaff={() => navigateTo('admin-staff')}
         activeGroupTab={activeGroupSection}
         onSelectGroupTab={(tab) => setActiveGroupSection(tab as GroupSectionId)}
       />
@@ -289,6 +354,8 @@ export default function App() {
       <Footer
         onOpenAdmin={() => setIsAdminOpen(true)}
         onOpenBooking={() => setIsBookingOpen(true)}
+        onNavigateClock={() => navigateTo('clock')}
+        onNavigateAdminStaff={() => navigateTo('admin-staff')}
       />
 
       {/* Modals & Drawers */}

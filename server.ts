@@ -1,4 +1,4 @@
-import express, { Request, Response, NextFunction } from 'express';
+import express, { type Request, type Response, type NextFunction } from 'express';
 import { createServer as createViteServer } from 'vite';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -11,7 +11,7 @@ import {
   INITIAL_REVIEWS,
   SAMPLE_LOYALTY_PROFILES
 } from './src/data/mockData.ts';
-import {
+import type {
   Appointment,
   Order,
   ReminderLog,
@@ -198,6 +198,7 @@ const validSessionTokens = new Set<string>();
 
 async function startServer() {
   const app = express();
+  app.disable('x-powered-by');
   const PORT = process.env.PORT || 3000;
 
   app.use(express.json());
@@ -732,10 +733,15 @@ async function startServer() {
   });
 
   // --- Static Production Serving or Vite Dev Middleware ---
+  const distPath = path.resolve(process.cwd(), 'dist');
   if (process.env.NODE_ENV === 'production') {
-    app.use(express.static(path.resolve(__dirname, 'dist')));
+    app.use(express.static(distPath, {
+      maxAge: '1y',
+      immutable: true,
+      etag: true
+    }));
     app.get('*', (_req: Request, res: Response) => {
-      res.sendFile(path.resolve(__dirname, 'dist', 'index.html'));
+      res.sendFile(path.resolve(distPath, 'index.html'));
     });
   } else {
     const vite = await createViteServer({

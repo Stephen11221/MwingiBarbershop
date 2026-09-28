@@ -5,9 +5,16 @@ import { SHOP_INFO } from '../data/mockData.ts';
 interface FooterProps {
   onOpenAdmin: () => void;
   onOpenBooking: () => void;
+  onNavigateClock?: () => void;
+  onNavigateAdminStaff?: () => void;
 }
 
-export const Footer: React.FC<FooterProps> = ({ onOpenAdmin, onOpenBooking }) => {
+export const Footer: React.FC<FooterProps> = ({
+  onOpenAdmin,
+  onOpenBooking,
+  onNavigateClock,
+  onNavigateAdminStaff
+}) => {
   return (
     <footer className="bg-[#08080A] border-t border-[#1C1C22] text-zinc-400 text-xs relative z-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
@@ -108,8 +115,32 @@ export const Footer: React.FC<FooterProps> = ({ onOpenAdmin, onOpenBooking }) =>
               className="text-zinc-400 hover:text-[#DFB76C] flex items-center gap-1 transition-colors cursor-pointer"
             >
               <ShieldCheck className="w-3.5 h-3.5" />
-              <span>Owner & Barber Portal</span>
+              <span>Owner & Appointments</span>
             </button>
+            {onNavigateClock && (
+              <>
+                <span>·</span>
+                <button
+                  onClick={onNavigateClock}
+                  className="text-zinc-400 hover:text-[#DFB76C] flex items-center gap-1 transition-colors cursor-pointer"
+                >
+                  <Clock className="w-3.5 h-3.5 text-[#DFB76C]" />
+                  <span>Staff Clock Kiosk (/clock)</span>
+                </button>
+              </>
+            )}
+            {onNavigateAdminStaff && (
+              <>
+                <span>·</span>
+                <button
+                  onClick={onNavigateAdminStaff}
+                  className="text-zinc-400 hover:text-[#DFB76C] flex items-center gap-1 transition-colors cursor-pointer"
+                >
+                  <ShieldCheck className="w-3.5 h-3.5 text-[#DFB76C]" />
+                  <span>Staff Admin (/admin/staff)</span>
+                </button>
+              </>
+            )}
           </div>
         </div>
       </div>

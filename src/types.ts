@@ -160,3 +160,85 @@ export interface AdminMetrics {
     rating: number;
   }[];
 }
+
+// ========================
+// STAFF MANAGEMENT SYSTEM
+// Ready for ZKTeco Biometric API integration
+// ========================
+
+export type SalaryType = 'daily' | 'monthly';
+
+export interface StaffMember {
+  id: string;
+  name: string;
+  role: string;
+  phone: string;
+  salaryType: SalaryType;
+  salaryAmount: number; // e.g. KSh 1,000 / day or KSh 30,000 / month
+  pin: string; // 4-digit PIN for clock-in/out
+  fingerprint_id?: string; // biometric template / device user ID for ZKTeco integration
+  active: boolean;
+  avatar?: string;
+  joinedDate: string;
+}
+
+export type AttendanceStatus = 'On Time' | 'Late' | 'Absent';
+
+export interface AttendanceRecord {
+  id: string;
+  staffId: string;
+  staffName: string;
+  date: string; // YYYY-MM-DD
+  clockInTime: string; // HH:MM AM/PM
+  clockOutTime?: string; // HH:MM AM/PM
+  clockInIso: string;
+  clockOutIso?: string;
+  hoursWorked: number; // Decimal hours, e.g., 8.5
+  status: AttendanceStatus;
+  // Biometric device log fields for future ZKTeco sync
+  device_log?: {
+    device_id?: string;
+    verify_type?: 'PIN' | 'FINGERPRINT' | 'FACE';
+    synced?: boolean;
+  };
+  notes?: string;
+}
+
+export interface StaffAdvancePayment {
+  id: string;
+  staffId: string;
+  staffName: string;
+  date: string;
+  amount: number;
+  reason: string;
+  approvedBy: string;
+}
+
+export interface StaffDayOffRequest {
+  id: string;
+  staffId: string;
+  staffName: string;
+  date: string; // Requested day off YYYY-MM-DD
+  reason: string;
+  status: 'pending' | 'approved' | 'rejected';
+  requestedAt: string;
+  respondedAt?: string;
+}
+
+// Runtime stubs to prevent Node.js ESM loader errors if types are imported without 'type' keyword
+export const Service = {};
+export const Barber = {};
+export const GalleryItem = {};
+export const Review = {};
+export const Product = {};
+export const CartItem = {};
+export const Order = {};
+export const Appointment = {};
+export const ReminderLog = {};
+export const LoyaltyProfile = {};
+export const AdminMetrics = {};
+export const StaffMember = {};
+export const AttendanceRecord = {};
+export const StaffAdvancePayment = {};
+export const StaffDayOffRequest = {};
+

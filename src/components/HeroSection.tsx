@@ -1,6 +1,6 @@
 import React from 'react';
-import { Calendar, MessageSquare, ArrowRight, Star, ShieldCheck, MapPin, Phone, Sparkles } from 'lucide-react';
-import { HERO_IMAGE, SHOP_INFO } from '../data/mockData.ts';
+import { Calendar, MessageSquare, ArrowRight, Star, ShieldCheck, MapPin, Phone, Sparkles, Cog } from 'lucide-react';
+import { HERO_IMAGE, BARBER_3D_MECHANIC_IMAGE, SHOP_INFO } from '../data/mockData.ts';
 
 interface HeroSectionProps {
   onBookNow: () => void;
@@ -15,13 +15,19 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
 }) => {
   return (
     <section className="relative min-h-[92vh] flex items-center justify-center overflow-hidden pt-28 pb-16 z-10">
-      {/* Background Hero Image with Warm Obsidian Scrim */}
-      <div className="absolute inset-0 z-0">
+      {/* Background Hero Image with Warm Obsidian Scrim & 3D Mechanic Gold Layer */}
+      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
         <img
           src={HERO_IMAGE}
           alt="Mwingi Home Boyz Cut African Men Haircut"
           referrerPolicy="no-referrer"
-          className="w-full h-full object-cover object-center filter brightness-[0.4] contrast-105"
+          decoding="async"
+          className="w-full h-full object-cover object-center filter brightness-[0.38] contrast-105"
+        />
+        {/* 3D Mechanic Barber Shovel & Gold Products Backdrop Blend */}
+        <div
+          className="absolute inset-0 opacity-25 mix-blend-screen bg-cover bg-center filter saturate-125 pointer-events-none"
+          style={{ backgroundImage: `url(${BARBER_3D_MECHANIC_IMAGE})` }}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[#0B0B0D] via-[#0B0B0D]/75 to-transparent" />
         <div className="absolute inset-0 bg-radial-at-c from-transparent via-[#0B0B0D]/60 to-[#0B0B0D]" />

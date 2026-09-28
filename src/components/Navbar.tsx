@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Scissors, ShoppingBag, ShieldCheck, Phone, Calendar, Menu, X, MessageSquare, MapPin } from 'lucide-react';
+import { Scissors, ShoppingBag, ShieldCheck, Phone, Calendar, Menu, X, MessageSquare, MapPin, Clock } from 'lucide-react';
 import { SHOP_INFO } from '../data/mockData.ts';
 
 interface NavbarProps {
@@ -8,6 +8,8 @@ interface NavbarProps {
   onOpenBooking: () => void;
   onOpenTracking: () => void;
   onOpenAdmin: () => void;
+  onNavigateClock?: () => void;
+  onNavigateAdminStaff?: () => void;
   activeGroupTab?: string;
   onSelectGroupTab?: (tab: string) => void;
 }
@@ -18,6 +20,8 @@ export const Navbar: React.FC<NavbarProps> = ({
   onOpenBooking,
   onOpenTracking,
   onOpenAdmin,
+  onNavigateClock,
+  onNavigateAdminStaff,
   activeGroupTab,
   onSelectGroupTab
 }) => {
@@ -140,11 +144,23 @@ export const Navbar: React.FC<NavbarProps> = ({
               <span>Book Barber</span>
             </button>
 
+            {/* Staff Clock Kiosk Button */}
+            {onNavigateClock && (
+              <button
+                onClick={onNavigateClock}
+                className="hidden md:flex items-center gap-1 px-2.5 py-1.5 rounded-lg border border-zinc-800 hover:border-[#DFB76C]/50 bg-[#121217] text-zinc-300 hover:text-[#DFB76C] text-xs font-medium transition-colors"
+                title="Public Staff Clock Kiosk (/clock)"
+              >
+                <Clock className="w-3.5 h-3.5 text-[#DFB76C]" />
+                <span>Clock</span>
+              </button>
+            )}
+
             {/* Admin Lock Portal */}
             <button
               onClick={onOpenAdmin}
               className="p-2 rounded-xl text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800/40 transition-colors"
-              title="Staff Portal (Director & Barbers)"
+              title="Appointments & Revenue Dashboard"
             >
               <ShieldCheck className="w-4 h-4" />
             </button>
@@ -196,6 +212,33 @@ export const Navbar: React.FC<NavbarProps> = ({
               <MessageSquare className="w-3.5 h-3.5" />
               <span>WhatsApp Direct (0746145712)</span>
             </a>
+
+            <div className="grid grid-cols-2 gap-2 pt-1">
+              {onNavigateClock && (
+                <button
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    onNavigateClock();
+                  }}
+                  className="py-2.5 px-3 rounded-xl bg-[#181822] border border-zinc-800 text-zinc-300 hover:text-white text-xs font-medium text-center flex items-center justify-center gap-1.5 cursor-pointer"
+                >
+                  <Clock className="w-3.5 h-3.5 text-[#DFB76C]" />
+                  <span>Clock Terminal</span>
+                </button>
+              )}
+              {onNavigateAdminStaff && (
+                <button
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    onNavigateAdminStaff();
+                  }}
+                  className="py-2.5 px-3 rounded-xl bg-[#181822] border border-zinc-800 text-zinc-300 hover:text-white text-xs font-medium text-center flex items-center justify-center gap-1.5 cursor-pointer"
+                >
+                  <ShieldCheck className="w-3.5 h-3.5 text-[#DFB76C]" />
+                  <span>Staff Admin</span>
+                </button>
+              )}
+            </div>
           </div>
         </div>
       )}
