@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Scissors, ShoppingBag, ShieldCheck, Phone, Calendar, Menu, X, MessageSquare, MapPin, Clock } from 'lucide-react';
+import { Scissors, ShoppingBag, ShieldCheck, Phone, Calendar, Menu, X, MessageSquare, MapPin, Clock, Camera } from 'lucide-react';
 import { SHOP_INFO } from '../data/mockData.ts';
 
 interface NavbarProps {
@@ -8,6 +8,7 @@ interface NavbarProps {
   onOpenBooking: () => void;
   onOpenTracking: () => void;
   onOpenAdmin: () => void;
+  onOpenPhotoUpload?: () => void;
   onNavigateClock?: () => void;
   onNavigateAdminStaff?: () => void;
   activeGroupTab?: string;
@@ -20,6 +21,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   onOpenBooking,
   onOpenTracking,
   onOpenAdmin,
+  onOpenPhotoUpload,
   onNavigateClock,
   onNavigateAdminStaff,
   activeGroupTab,
@@ -120,6 +122,18 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           {/* ZONE 3: ACTIONS & UTILITIES */}
           <div className="flex items-center gap-2.5 sm:gap-3">
+            {/* Real Photos Uploader */}
+            {onOpenPhotoUpload && (
+              <button
+                onClick={onOpenPhotoUpload}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-[#DFB76C]/40 bg-[#DFB76C]/10 hover:bg-[#DFB76C]/20 text-[#DFB76C] text-xs font-semibold transition-all cursor-pointer shadow-sm"
+                title="Upload and replace website photos with your real WhatsApp photos"
+              >
+                <Camera className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline">Upload Photos</span>
+              </button>
+            )}
+
             {/* Track / Pay Button */}
             <button
               onClick={onOpenTracking}
@@ -219,6 +233,19 @@ export const Navbar: React.FC<NavbarProps> = ({
               <MessageSquare className="w-3.5 h-3.5" />
               <span>WhatsApp Direct (0746145712)</span>
             </a>
+
+            {onOpenPhotoUpload && (
+              <button
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  onOpenPhotoUpload();
+                }}
+                className="w-full py-2.5 rounded-xl bg-[#DFB76C]/15 border border-[#DFB76C]/40 text-[#DFB76C] text-xs font-semibold text-center flex items-center justify-center gap-1.5 cursor-pointer"
+              >
+                <Camera className="w-3.5 h-3.5" />
+                <span>Upload Real Barbershop Photos</span>
+              </button>
+            )}
 
             <div className="grid grid-cols-2 gap-2 pt-1">
               {onNavigateClock && (

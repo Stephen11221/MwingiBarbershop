@@ -1,6 +1,7 @@
 import express, { type Request, type Response, type NextFunction } from 'express';
 import { createServer as createViteServer } from 'vite';
 import path from 'path';
+import fs from 'fs';
 import { fileURLToPath } from 'url';
 import crypto from 'crypto';
 import {
@@ -264,7 +265,130 @@ async function startServer() {
     next();
   });
 
-  app.use(express.json({ limit: '1mb' }));
+  app.use(express.json({ limit: '50mb' }));
+
+  // --- Real Photo Upload Endpoints for Owner Photos ---
+  const ALLOWED_PHOTO_SLOTS = [
+    'team',
+    'shop',
+    'cut',
+    'station',
+    'barber-banner',
+    'barber-kelvin',
+    'barber-brian',
+    'barber-dennis',
+    'gallery-1',
+    'gallery-2',
+    'gallery-3',
+    'gallery-4',
+    'gallery-5',
+    'gallery-6'
+  ];
+
+  app.post('/api/upload-photo', (req: Request, res: Response) => {
+    try {
+      const { slot, dataUrl } = req.body;
+      if (!slot || !dataUrl) {
+        return res.status(400).json({ error: 'Missing slot or image data' });
+      }
+
+      const cleanSlot = String(slot).toLowerCase().trim();
+      if (!ALLOWED_PHOTO_SLOTS.includes(cleanSlot)) {
+        return res.status(400).json({ error: 'Invalid photo slot target' });
+      }
+
+      const matches = dataUrl.match(/^data:image\/([A-Za-z-+\/]+);base64,(.+)$/);
+      if (!matches || matches.length !== 3) {
+        return res.status(400).json({ error: 'Invalid base64 image data' });
+      }
+
+      const imageBuffer = Buffer.from(matches[2], 'base64');
+      const publicDir = path.resolve(process.cwd(), 'public');
+      const distDir = path.resolve(process.cwd(), 'dist');
+
+      if (!fs.existsSync(publicDir)) {
+        fs.mkdirSync(publicDir, { recursive: true });
+      }
+
+      const targetFileName = `${cleanSlot}.jpg`;
+      fs.writeFileSync(path.join(publicDir, targetFileName), imageBuffer);
+
+      if (fs.existsSync(distDir)) {
+        fs.writeFileSync(path.join(distDir, targetFileName), imageBuffer);
+      }
+
+      const updatedUrl = `/${targetFileName}?t=${Date.now()}`;
+      return res.json({
+        success: true,
+        slot: cleanSlot,
+        url: updatedUrl,
+        message: `Photo for ${cleanSlot} updated with your real photo!`
+      });
+    } catch (err: any) {
+      console.error('Error saving uploaded photo:', err);
+      return res.status(500).json({ error: 'Failed to process and save image' });
+    }
+  });
+
+  app.post('/api/upload-batch-photos', (req: Request, res: Response) => {
+    try {
+      const { photos } = req.body; // Array of { slot?: string, dataUrl: string }
+      if (!Array.isArray(photos) || photos.length === 0) {
+        return res.status(400).json({ error: 'No photos array provided' });
+      }
+
+      const defaultSlotMapping = [
+        'shop',           // Photo 1 -> Main Shop Interior
+        'cut',            // Photo 2 -> Haircut / Fade in Progress
+        'team',           // Photo 3 -> Full Barber Crew
+        'barber-banner',  // Photo 4 -> Banner Mwangi
+        'barber-kelvin',  // Photo 5 -> Kelvin Mutua
+        'barber-brian',   // Photo 6 -> Brian Musyoka
+        'barber-dennis',  // Photo 7 -> Dennis Kimanzi
+        'station',        // Photo 8 -> Barber station & tools
+        'gallery-1',      // Photo 9 -> Additional shop view
+        'gallery-2'       // Photo 10 -> Additional client view
+      ];
+
+      const results: { slot: string; url: string }[] = [];
+      const publicDir = path.resolve(process.cwd(), 'public');
+      const distDir = path.resolve(process.cwd(), 'dist');
+
+      if (!fs.existsSync(publicDir)) {
+        fs.mkdirSync(publicDir, { recursive: true });
+      }
+
+      photos.forEach((item, index) => {
+        if (!item || !item.dataUrl) return;
+        const assignedSlot = item.slot || defaultSlotMapping[index] || `gallery-${index + 1}`;
+        const matches = item.dataUrl.match(/^data:image\/([A-Za-z-+\/]+);base64,(.+)$/);
+        if (!matches || matches.length !== 3) return;
+
+        const imageBuffer = Buffer.from(matches[2], 'base64');
+        const targetFileName = `${assignedSlot}.jpg`;
+        fs.writeFileSync(path.join(publicDir, targetFileName), imageBuffer);
+
+        if (fs.existsSync(distDir)) {
+          fs.writeFileSync(path.join(distDir, targetFileName), imageBuffer);
+        }
+
+        results.push({
+          slot: assignedSlot,
+          url: `/${targetFileName}?t=${Date.now()}`
+        });
+      });
+
+      return res.json({
+        success: true,
+        count: results.length,
+        results,
+        message: `Successfully uploaded and replaced ${results.length} real photos across the site!`
+      });
+    } catch (err: any) {
+      console.error('Error in batch photo upload:', err);
+      return res.status(500).json({ error: 'Failed to process batch photos' });
+    }
+  });
 
   // --- Auth Middleware for Protected Admin Routes ---
   const requireAdmin = (req: Request, res: Response, next: NextFunction) => {

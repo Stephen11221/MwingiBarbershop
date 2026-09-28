@@ -1,10 +1,11 @@
 import React from 'react';
-import { MessageCircle, ShieldCheck, MapPin, Clock, Phone, Mail, Briefcase } from 'lucide-react';
+import { MessageCircle, ShieldCheck, MapPin, Clock, Phone, Mail, Briefcase, Camera } from 'lucide-react';
 import { SHOP_INFO } from '../data/mockData.ts';
 
 interface FooterProps {
   onOpenAdmin: () => void;
   onOpenBooking: () => void;
+  onOpenPhotoUpload?: () => void;
   onNavigateClock?: () => void;
   onNavigateAdminStaff?: () => void;
 }
@@ -12,6 +13,7 @@ interface FooterProps {
 export const Footer: React.FC<FooterProps> = ({
   onOpenAdmin,
   onOpenBooking,
+  onOpenPhotoUpload,
   onNavigateClock,
   onNavigateAdminStaff
 }) => {
@@ -117,11 +119,23 @@ export const Footer: React.FC<FooterProps> = ({
           <div>
             © {new Date().getFullYear()} Mwingi Home Boyz Cut. Mwingi, Kitui County.
           </div>
-          <div className="flex items-center gap-6">
+          <div className="flex flex-wrap items-center gap-4 sm:gap-6">
             <span>Surgical Hygiene Certified</span>
             <span>·</span>
             <span>M-Pesa Verified</span>
             <span>·</span>
+            {onOpenPhotoUpload && (
+              <>
+                <button
+                  onClick={onOpenPhotoUpload}
+                  className="text-[#DFB76C] hover:text-white flex items-center gap-1 transition-colors cursor-pointer font-medium"
+                >
+                  <Camera className="w-3.5 h-3.5" />
+                  <span>Upload Real Photos</span>
+                </button>
+                <span>·</span>
+              </>
+            )}
             <button
               onClick={onOpenAdmin}
               className="text-zinc-400 hover:text-[#DFB76C] flex items-center gap-1 transition-colors cursor-pointer"

@@ -1,22 +1,23 @@
 import type { Service, Barber, GalleryItem, Review, Product, LoyaltyProfile } from '../types.ts';
 
-// Premium AI Barbershop Images saved in /public
+// Premium Barbershop Images saved in /public based on real shop photos
 export const TEAM_IMAGE = '/team.jpg';
 export const SHOP_IMAGE = '/shop.jpg';
 export const CUT_IMAGE = '/cut.jpg';
+export const STATION_IMAGE = '/station.jpg';
 
 // Core asset aliases pointing to verified static public assets
 export const HERO_IMAGE = '/shop.jpg';
 export const WAVES_FADE_IMAGE = '/cut.jpg';
 export const BEARD_GROOMING_IMAGE = '/cut.jpg';
-export const BARBER_MASTER_IMAGE = '/team.jpg';
-export const BARBER_FADE_IMAGE = '/cut.jpg';
-export const PRODUCT_IMAGE = '/shop.jpg';
+export const BARBER_MASTER_IMAGE = '/barber-brian.jpg';
+export const BARBER_FADE_IMAGE = '/barber-kelvin.jpg';
+export const PRODUCT_IMAGE = '/station.jpg';
 
-export const BARBERSHOP_WORKERS_CREW_IMAGE = '/team.jpg';
-export const BARBER_WORKER_PORTRAIT_IMAGE = '/team.jpg';
+export const BARBERSHOP_WORKERS_CREW_IMAGE = '/barber-dennis.jpg';
+export const BARBER_WORKER_PORTRAIT_IMAGE = '/barber-banner.jpg';
 export const BARBER_3D_MECHANIC_IMAGE = '/shop.jpg';
-export const GOLD_PRODUCTS_3D_IMAGE = '/shop.jpg';
+export const GOLD_PRODUCTS_3D_IMAGE = '/station.jpg';
 
 export const SHOP_INFO = {
   name: 'MWINGI HOME BOYZ',
@@ -228,43 +229,63 @@ export const INITIAL_BARBERS: Barber[] = [
 export const INITIAL_GALLERY: GalleryItem[] = [
   {
     id: 'gal-team',
-    title: 'The Master Crew: 4 Kenyan Barbers in Signature Uniforms',
+    title: 'The Master Crew: Authentic Kenyan Barbers on Station',
     category: 'facials',
     categoryLabel: 'Mwingi Team',
     barberName: 'Resident Master Barbers',
     image: '/team.jpg',
-    description: 'Our executive 4-man master barber team in black leather and gold embroidered Mwingi Home Boyz aprons.',
-    productUsed: 'Precision Gold Shears & Clippers'
+    description: 'Our active 4-man master barber collective on shift at our Mwingi executive shop along Mwingi level IV hospital.',
+    productUsed: 'Professional Clipper Lineup & UV Sterilization'
   },
   {
     id: 'gal-shop',
-    title: 'Luxury Black & Gold Executive Barbershop Interior',
+    title: 'Live Barbershop Salon & Styling Stations in Action',
     category: 'facials',
     categoryLabel: 'Lounge Interior',
     barberName: 'Executive Suite',
     image: '/shop.jpg',
-    description: 'World-class 4-chair executive barbershop in Mwingi with polished black marble, gold accents, and warm ambient glow.',
-    productUsed: 'UV Sterilization Station'
+    description: 'Our real shop interior featuring hydraulic reclining chairs, gold mirrors, wood wall panels, and optical floor tiles with barbers attending clients.',
+    productUsed: 'Sterilized Tool Warmer Station'
   },
   {
     id: 'gal-cut',
-    title: 'Precision Fresh Fade Haircut & Razor Lineup in Progress',
+    title: 'Live Barber Precision Fade & Razor Lineup',
     category: 'fades',
     categoryLabel: 'Fresh Fade Cut',
     barberName: 'Lead Fade Specialist',
     image: '/cut.jpg',
-    description: 'Close-up craftsmanship: surgical skin fade and millimeter beard lineup using gold-plated clippers.',
+    description: 'Close-up craftsmanship: precision clippers sculpting a clean edge-up and seamless fade on customer.',
     productUsed: 'Home Boyz Wave Pomade & Razor Finish'
   },
   {
-    id: 'gal-waves',
-    title: 'Executive Skin Taper & Deep 360 Waves',
+    id: 'gal-station',
+    title: 'Executive Barber Station, Ring Light & Rotating Barber Pole',
+    category: 'facials',
+    categoryLabel: 'Styling Station',
+    barberName: 'Station 1',
+    image: '/station.jpg',
+    description: 'Professional barber station equipped with ring light, traditional rotating illuminated barber pole, tool chests, and hot towel warmer.',
+    productUsed: 'Medical Grade Sanitizer'
+  },
+  {
+    id: 'gal-shave',
+    title: 'Master Shaving & Beard Architecture Ceremony',
+    category: 'beard',
+    categoryLabel: 'Beard & Shave',
+    barberName: 'Brian Musyoka',
+    image: '/barber-brian.jpg',
+    description: 'Real straight-razor detailing, hot towel prep, and beard contouring on customer in chair.',
+    productUsed: 'Nourishing Beard Balm'
+  },
+  {
+    id: 'gal-tools',
+    title: 'Custom Professional Clipper Array & Styling Bar',
     category: 'fades',
-    categoryLabel: 'Precision Fades',
-    barberName: 'Banner Mwangi',
-    image: '/cut.jpg',
-    description: 'Crisp temple taper and surgical edging with smooth gradient transitions on African texture.',
-    productUsed: 'Organic Argan Finishing Mist'
+    categoryLabel: 'Artisan Station',
+    barberName: 'Kelvin Mutua',
+    image: '/barber-kelvin.jpg',
+    description: 'Gold cordless clippers, micro-trimmers, blow dryers, and guards prepared for surgical haircutting.',
+    productUsed: 'Clipper Blade Ice Disinfectant'
   }
 ];
 
