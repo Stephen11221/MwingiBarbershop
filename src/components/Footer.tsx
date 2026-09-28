@@ -1,5 +1,5 @@
 import React from 'react';
-import { MessageCircle, ShieldCheck, MapPin, Clock, Phone, Mail } from 'lucide-react';
+import { MessageCircle, ShieldCheck, MapPin, Clock, Phone, Mail, Briefcase } from 'lucide-react';
 import { SHOP_INFO } from '../data/mockData.ts';
 
 interface FooterProps {
@@ -22,10 +22,10 @@ export const Footer: React.FC<FooterProps> = ({
           {/* Brand */}
           <div className="space-y-4">
             <h3 className="text-xl font-bold font-serif text-white tracking-wider uppercase">
-              MWINGI HOME BOYZ CUT
+              MWINGI HOME BOYZ
             </h3>
             <p className="text-xs text-zinc-400 leading-relaxed font-light">
-              Mwingi's benchmark in executive African fades, 360 wave sculpting, straight razor beard artistry, and restorative facial therapies.
+              Executive Barbershop, Mwingi. Luxury black and gold theme since 2019. Razor-sharp African fades, 360 waves, beard sculpting, and facial steam therapy.
             </p>
             <div className="flex items-center gap-2 text-[11px] text-[#DFB76C]">
               <span>Sterilized Blades</span>
@@ -37,11 +37,14 @@ export const Footer: React.FC<FooterProps> = ({
           {/* Location & Hours */}
           <div className="space-y-3">
             <h4 className="text-xs font-semibold uppercase tracking-wider text-white">
-              Location & Hours
+              Workstation & Location
             </h4>
             <div className="flex items-start gap-2">
               <MapPin className="w-4 h-4 text-[#DFB76C] shrink-0 mt-0.5" />
-              <span>{SHOP_INFO.location} ({SHOP_INFO.locationDetails})</span>
+              <div className="space-y-1 text-zinc-300">
+                <div className="font-medium text-white">{SHOP_INFO.workstation || 'Mwingi Kitui County along Mwingi level IV hospital'}</div>
+                <div className="text-[11px] text-zinc-400">Kitui County, Eastern Kenya</div>
+              </div>
             </div>
             <div className="flex items-start gap-2">
               <Clock className="w-4 h-4 text-[#DFB76C] shrink-0 mt-0.5" />
@@ -56,7 +59,7 @@ export const Footer: React.FC<FooterProps> = ({
           {/* Direct Concierge Line */}
           <div className="space-y-3">
             <h4 className="text-xs font-semibold uppercase tracking-wider text-white">
-              Direct Contact
+              Direct Contact & Jobs
             </h4>
             <div className="flex items-center gap-2">
               <Phone className="w-4 h-4 text-[#DFB76C] shrink-0" />
@@ -79,6 +82,15 @@ export const Footer: React.FC<FooterProps> = ({
               <Mail className="w-4 h-4 text-[#DFB76C] shrink-0" />
               <a href={`mailto:${SHOP_INFO.email}`} className="hover:text-white transition-colors">
                 {SHOP_INFO.email}
+              </a>
+            </div>
+            <div className="pt-2 border-t border-zinc-800/80">
+              <a
+                href="mailto:bannermwangi0@gmail.com?subject=Job%20Application%20-%20Mwingi%20Home%20Boyz%20Barbershop&body=Hello%20Banner%20Mwangi,%0A%0AI%20am%20applying%20for%20a%20Barber%20position%20at%20Mwingi%20Home%20Boyz%20Executive%20Barbershop%20(Mwingi%20Kitui%20County%20along%20Mwingi%20level%20IV%20hospital).%0A%0AMy%20Name:%0APhone:%0AExperience:%0A%0AThank%20you."
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#181822] hover:bg-[#20202E] border border-[#DFB76C]/40 text-[#DFB76C] hover:text-white transition-colors text-[11px] font-medium"
+              >
+                <Briefcase className="w-3.5 h-3.5" />
+                <span>Job Applications (bannermwangi0@gmail.com)</span>
               </a>
             </div>
           </div>

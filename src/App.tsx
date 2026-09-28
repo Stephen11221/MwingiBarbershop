@@ -23,6 +23,7 @@ import { ThreeDScrollCanvas } from './components/ThreeDScrollCanvas.tsx';
 import { SectionGrouper, GroupSectionId } from './components/SectionGrouper.tsx';
 import { ServicesSection } from './components/ServicesSection.tsx';
 import { BarbersSection } from './components/BarbersSection.tsx';
+import { ExecutiveVisualShowcase } from './components/ExecutiveVisualShowcase.tsx';
 import { GallerySection } from './components/GallerySection.tsx';
 import { ShopSection } from './components/ShopSection.tsx';
 import { LoyaltySection } from './components/LoyaltySection.tsx';
@@ -300,6 +301,16 @@ export default function App() {
             }
           }}
         />
+
+        {/* Executive 3-Image Visual Showcase (Team Photo, Shop Interior, Fresh Fade Cut) */}
+        {(activeGroupSection === 'all' || activeGroupSection === 'crew') && (
+          <ExecutiveVisualShowcase
+            onBookNow={() => {
+              setPreSelectedService(null);
+              setIsBookingOpen(true);
+            }}
+          />
+        )}
 
         {/* CONDITIONAL VIEW RENDERING BASED ON USER'S GROUP SELECTION */}
         {/* 1. The Master Crew - Minimalist: Only Barber Photo, Name, Specialty & Book Button */}

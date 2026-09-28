@@ -31,7 +31,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
   onUpdateAppointmentStatus
 }) => {
   const [token, setToken] = useState<string | null>(() => sessionStorage.getItem('blade_admin_token'));
-  const [emailInput, setEmailInput] = useState('bannermwangi0@gmail.com');
+  const [emailInput, setEmailInput] = useState('');
   const [pinInput, setPinInput] = useState('');
   const [loginError, setLoginError] = useState<string | null>(null);
   const [isLoggingIn, setIsLoggingIn] = useState(false);
@@ -221,7 +221,8 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                     required
                     value={emailInput}
                     onChange={(e) => setEmailInput(e.target.value)}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-[#0B0B0D] border border-zinc-800 text-white focus:outline-none focus:border-[#C5A059]"
+                    placeholder="Enter authorized executive email..."
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-[#0B0B0D] border border-zinc-800 text-white placeholder-zinc-600 focus:outline-none focus:border-[#C5A059]"
                   />
                 </div>
 
@@ -232,7 +233,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                     required
                     value={pinInput}
                     onChange={(e) => setPinInput(e.target.value)}
-                    placeholder="Enter Security PIN (Demo: 7799)"
+                    placeholder="Enter 4-digit Security PIN"
                     className="w-full px-3.5 py-2.5 rounded-xl bg-[#0B0B0D] border border-zinc-800 text-white placeholder-zinc-600 focus:outline-none focus:border-[#C5A059]"
                   />
                 </div>
@@ -243,8 +244,9 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                   </div>
                 )}
 
-                <div className="p-3 rounded-lg bg-[#16161D] border border-zinc-800 text-[11px] text-zinc-400">
-                  <span className="text-[#DFB76C] font-semibold">Demo Access Notice:</span> Backend configured PIN is <span className="font-mono text-white font-bold">7799</span>.
+                <div className="p-3 rounded-lg bg-[#121217] border border-zinc-800/80 text-[11px] text-zinc-500 flex items-center gap-2">
+                  <Lock className="w-3.5 h-3.5 text-[#DFB76C] shrink-0" />
+                  <span>Executive session encrypted with token expiration and brute-force prevention.</span>
                 </div>
 
                 <button

@@ -387,6 +387,10 @@ export const PublicClockPage: React.FC<PublicClockPageProps> = ({
                             <img
                               src={staff.avatar}
                               alt={record.staffName}
+                              referrerPolicy="no-referrer"
+                              onError={(e) => {
+                                e.currentTarget.src = '/team.jpg';
+                              }}
                               className="w-7 h-7 rounded-full object-cover border border-zinc-700"
                             />
                           ) : (
@@ -446,14 +450,14 @@ export const PublicClockPage: React.FC<PublicClockPageProps> = ({
             </table>
           </div>
 
-          {/* Quick Staff Roster & Registered PIN Hints */}
+          {/* Staff Attendance Roster & Support */}
           <div className="mt-6 pt-4 border-t border-zinc-800/80 flex flex-wrap items-center justify-between gap-3 text-zinc-400 text-[11px]">
             <div className="flex items-center gap-2">
               <UserCheck className="w-3.5 h-3.5 text-[#DFB76C]" />
-              <span>Registered Staff: {staffList.map(s => s.name).join(', ')}</span>
+              <span>Registered Barbers: {staffList.map(s => s.name).join(', ')}</span>
             </div>
             <div className="text-zinc-500">
-              Need PIN assistance? Contact Managing Director (Banner Mwangi).
+              PIN or terminal assistance: Contact Managing Director (Banner Mwangi).
             </div>
           </div>
         </div>

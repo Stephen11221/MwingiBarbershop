@@ -19,7 +19,10 @@ import {
   CreditCard,
   ChevronRight,
   TrendingUp,
-  FileSpreadsheet
+  FileSpreadsheet,
+  Lock,
+  Eye,
+  EyeOff
 } from 'lucide-react';
 import {
   StaffMember,
@@ -75,6 +78,11 @@ export const AdminStaffPage: React.FC<AdminStaffPageProps> = ({
   const [staffFilter, setStaffFilter] = useState<string>('all');
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [feedback, setFeedback] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
+  const [revealedPins, setRevealedPins] = useState<Record<string, boolean>>({});
+
+  const togglePinReveal = (staffId: string) => {
+    setRevealedPins(prev => ({ ...prev, [staffId]: !prev[staffId] }));
+  };
 
   // Add Staff Modal / Form
   const [addStaffModalOpen, setAddStaffModalOpen] = useState(false);
@@ -120,15 +128,41 @@ export const AdminStaffPage: React.FC<AdminStaffPageProps> = ({
     }
   }, [isAuthenticated]);
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (passwordInput.trim() === 'mwingi2024') {
-      sessionStorage.setItem('mwingi_staff_admin_auth', 'true');
-      setIsAuthenticated(true);
-      setAuthError(null);
-      reloadData();
-    } else {
-      setAuthError('Invalid password. Authorized Mwingi management only.');
+    if (!passwordInput.trim()) {
+      setAuthError('Please enter administrator password.');
+      return;
+    }
+
+    try {
+      const res = await fetch('/api/auth/staff-admin-login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password: passwordInput.trim() })
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        sessionStorage.setItem('mwingi_staff_admin_auth', 'true');
+        if (data.token) {
+          sessionStorage.setItem('mwingi_staff_token', data.token);
+        }
+        setIsAuthenticated(true);
+        setAuthError(null);
+        reloadData();
+      } else {
+        setAuthError(data.error || 'Access denied. Unauthorized management attempt.');
+      }
+    } catch {
+      // Fallback offline verification if API unreachable
+      if (passwordInput.trim() === 'mwingi2024') {
+        sessionStorage.setItem('mwingi_staff_admin_auth', 'true');
+        setIsAuthenticated(true);
+        setAuthError(null);
+        reloadData();
+      } else {
+        setAuthError('Authentication verification failed.');
+      }
     }
   };
 
@@ -306,9 +340,10 @@ export const AdminStaffPage: React.FC<AdminStaffPageProps> = ({
                 className="w-full px-4 py-3 rounded-xl bg-[#0A0A0D] border border-zinc-800 text-white text-sm focus:outline-none focus:border-[#DFB76C]"
                 autoFocus
               />
-              <span className="text-[10px] text-zinc-500 mt-1 block">
-                Default Access Password: <strong className="text-zinc-400 font-mono">mwingi2024</strong>
-              </span>
+              <div className="flex items-center gap-1.5 text-[10px] text-zinc-500 mt-1.5">
+                <Lock className="w-3 h-3 text-[#DFB76C] shrink-0" />
+                <span>Restricted management portal. Unauthorized access is strictly logged and prohibited.</span>
+              </div>
             </div>
 
             <button
@@ -685,6 +720,10 @@ export const AdminStaffPage: React.FC<AdminStaffPageProps> = ({
                           <img
                             src={staff.avatar}
                             alt={staff.name}
+                            referrerPolicy="no-referrer"
+                            onError={(e) => {
+                              e.currentTarget.src = '/team.jpg';
+                            }}
                             className="w-12 h-12 rounded-xl object-cover border border-zinc-700"
                           />
                         ) : (
@@ -728,9 +767,23 @@ export const AdminStaffPage: React.FC<AdminStaffPageProps> = ({
                       </div>
                       <div className="flex items-center justify-between">
                         <span className="text-zinc-400">Terminal PIN:</span>
-                        <span className="font-mono bg-zinc-900 px-2 py-0.5 rounded text-[#DFB76C] font-bold">
-                          {staff.pin}
-                        </span>
+                        <div className="flex items-center gap-1.5">
+                          <span className="font-mono bg-zinc-900 px-2 py-0.5 rounded text-[#DFB76C] font-bold tracking-widest text-xs">
+                            {revealedPins[staff.id] ? staff.pin : '••••'}
+                          </span>
+                          <button
+                            type="button"
+                            onClick={() => togglePinReveal(staff.id)}
+                            className="p-1 text-zinc-500 hover:text-[#DFB76C] transition-colors"
+                            title={revealedPins[staff.id] ? 'Hide PIN' : 'Reveal PIN'}
+                          >
+                            {revealedPins[staff.id] ? (
+                              <EyeOff className="w-3.5 h-3.5" />
+                            ) : (
+                              <Eye className="w-3.5 h-3.5" />
+                            )}
+                          </button>
+                        </div>
                       </div>
                       <div className="flex items-center justify-between">
                         <span className="text-zinc-400">Biometric Template:</span>

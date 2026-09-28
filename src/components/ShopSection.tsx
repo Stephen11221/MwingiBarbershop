@@ -61,13 +61,16 @@ export const ShopSection: React.FC<ShopSectionProps> = ({
               </div>
             </div>
 
-            <div className="lg:col-span-6 relative h-64 sm:h-72 lg:h-80 overflow-hidden">
+            <div className="lg:col-span-6 relative h-64 sm:h-72 lg:h-80 overflow-hidden bg-black">
               <img
-                src={GOLD_PRODUCTS_3D_IMAGE}
+                src="/shop.jpg"
                 alt="3D Gold Mechanic Barber Grooming Products"
                 referrerPolicy="no-referrer"
                 loading="lazy"
                 decoding="async"
+                onError={(e) => {
+                  e.currentTarget.src = '/shop.jpg';
+                }}
                 className="w-full h-full object-cover object-center filter brightness-95 contrast-105 hover:scale-105 transition-transform duration-700"
               />
               <div className="absolute inset-0 bg-gradient-to-t lg:bg-gradient-to-r from-[#14141A] via-transparent to-transparent" />
@@ -123,6 +126,9 @@ export const ShopSection: React.FC<ShopSectionProps> = ({
                   referrerPolicy="no-referrer"
                   loading="lazy"
                   decoding="async"
+                  onError={(e) => {
+                    e.currentTarget.src = '/shop.jpg';
+                  }}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 rounded-lg filter brightness-95"
                 />
                 <div className="absolute top-3 right-3 px-2.5 py-1 rounded-md bg-black/75 backdrop-blur-md border border-zinc-800 text-[11px] font-mono text-zinc-300">

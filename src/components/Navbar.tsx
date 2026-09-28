@@ -49,12 +49,19 @@ export const Navbar: React.FC<NavbarProps> = ({
   return (
     <header className="fixed top-0 left-0 right-0 z-40 bg-[#0B0B0D]/90 backdrop-blur-md border-b border-[#1E1E24]">
       {/* Top micro-banner */}
-      <div className="bg-[#121217] border-b border-zinc-800/80 py-1 px-4 text-center text-[11px] text-zinc-400 flex items-center justify-center gap-3">
-        <span className="flex items-center gap-1 text-[#DFB76C]">
-          <MapPin className="w-3 h-3" />
-          <span>Mwingi, Kitui County</span>
+      <div className="bg-[#121217] border-b border-zinc-800/80 py-1.5 px-4 text-center text-[11px] text-zinc-400 flex flex-wrap items-center justify-center gap-3">
+        <span className="flex items-center gap-1 text-[#DFB76C] font-medium">
+          <MapPin className="w-3.5 h-3.5" />
+          <span>Workstation: Mwingi Kitui County along Mwingi level IV hospital</span>
         </span>
-        <span className="text-zinc-600">|</span>
+        <span className="text-zinc-600 hidden md:inline">|</span>
+        <a
+          href="mailto:bannermwangi0@gmail.com?subject=Barber%20Job%20Application%20-%20Mwingi%20Home%20Boyz"
+          className="hover:text-white transition-colors flex items-center gap-1 text-[#DFB76C] bg-zinc-900/90 px-2.5 py-0.5 rounded border border-[#DFB76C]/40 text-[10.5px]"
+        >
+          <span>Barber Jobs: bannermwangi0@gmail.com</span>
+        </a>
+        <span className="text-zinc-600 hidden sm:inline">|</span>
         <a
           href={`tel:${SHOP_INFO.phone}`}
           className="hover:text-white transition-colors flex items-center gap-1 text-zinc-300"
@@ -70,7 +77,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           className="hover:text-emerald-400 transition-colors hidden sm:flex items-center gap-1 text-emerald-400"
         >
           <MessageSquare className="w-3 h-3" />
-          <span>WhatsApp Concierge</span>
+          <span>WhatsApp</span>
         </a>
       </div>
 

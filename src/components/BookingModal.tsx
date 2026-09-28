@@ -276,7 +276,7 @@ END:VCALENDAR`;
             <div className="mb-6">
               <div className="text-xs uppercase tracking-[0.2em] font-semibold text-[#DFB76C] mb-1 flex items-center gap-1.5">
                 <MapPin className="w-3.5 h-3.5 text-[#DFB76C]" />
-                <span>Mwingi, Kitui County</span>
+                <span>Mwingi Kitui County along Mwingi level IV hospital</span>
               </div>
               <h3 className="text-2xl font-bold font-serif text-white">
                 Book Your Barber at Mwingi Home Boyz
@@ -326,6 +326,9 @@ END:VCALENDAR`;
                         src={barber.image}
                         alt={barber.name}
                         referrerPolicy="no-referrer"
+                        onError={(e) => {
+                          e.currentTarget.src = '/team.jpg';
+                        }}
                         className="w-12 h-12 rounded-full object-cover object-top border border-zinc-700 mb-1.5"
                       />
                       <div className="text-xs font-bold text-white truncate w-full">{barber.name}</div>

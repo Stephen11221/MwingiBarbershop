@@ -1,26 +1,35 @@
 import type { Service, Barber, GalleryItem, Review, Product, LoyaltyProfile } from '../types.ts';
 
-export const HERO_IMAGE = '/src/assets/images/mwingi_hero_african_man_1790175777735.jpg';
-export const WAVES_FADE_IMAGE = '/src/assets/images/african_man_waves_fade_1790175807521.jpg';
-export const BEARD_GROOMING_IMAGE = '/src/assets/images/african_man_beard_grooming_1790175817808.jpg';
-export const BARBER_MASTER_IMAGE = '/src/assets/images/barber_crew_african_master_1790175791861.jpg';
-export const BARBER_FADE_IMAGE = '/src/assets/images/barber_crew_fade_specialist_1790175830491.jpg';
-export const PRODUCT_IMAGE = '/src/assets/images/product_matte_pomade_1790174714855.jpg';
+// Premium AI Barbershop Images saved in /public
+export const TEAM_IMAGE = '/team.jpg';
+export const SHOP_IMAGE = '/shop.jpg';
+export const CUT_IMAGE = '/cut.jpg';
 
-// AI Generated Workers Team & 3D Mechanic Imagery
-export const BARBERSHOP_WORKERS_CREW_IMAGE = '/src/assets/images/barbershop_workers_crew_1790187275142.jpg';
-export const BARBER_WORKER_PORTRAIT_IMAGE = '/src/assets/images/barber_worker_portrait_1790187286839.jpg';
-export const BARBER_3D_MECHANIC_IMAGE = '/src/assets/images/barber_3d_mechanic_1790187297269.jpg';
-export const GOLD_PRODUCTS_3D_IMAGE = '/src/assets/images/gold_products_3d_1790187306460.jpg';
+// Core asset aliases pointing to verified static public assets
+export const HERO_IMAGE = '/shop.jpg';
+export const WAVES_FADE_IMAGE = '/cut.jpg';
+export const BEARD_GROOMING_IMAGE = '/cut.jpg';
+export const BARBER_MASTER_IMAGE = '/team.jpg';
+export const BARBER_FADE_IMAGE = '/cut.jpg';
+export const PRODUCT_IMAGE = '/shop.jpg';
+
+export const BARBERSHOP_WORKERS_CREW_IMAGE = '/team.jpg';
+export const BARBER_WORKER_PORTRAIT_IMAGE = '/team.jpg';
+export const BARBER_3D_MECHANIC_IMAGE = '/shop.jpg';
+export const GOLD_PRODUCTS_3D_IMAGE = '/shop.jpg';
 
 export const SHOP_INFO = {
-  name: 'Mwingi Home Boyz Cut',
-  tagline: 'Premier Executive Barbershop & Grooming Lounge',
+  name: 'MWINGI HOME BOYZ',
+  tagline: 'Executive Barbershop · Mwingi · Since 2019',
+  since: '2019',
   phone: '0746145712',
   phoneInternational: '+254746145712',
   email: 'bannermwangi0@gmail.com',
-  location: 'Mwingi Town, Kitui County, Kenya',
-  locationDetails: 'Opposite Equity Bank, Mwingi Central Business Hub',
+  jobEmail: 'bannermwangi0@gmail.com',
+  location: 'Mwingi, Kitui County',
+  locationDetails: 'Mwingi Kitui County along Mwingi level IV hospital',
+  workstation: 'Mwingi Kitui County along Mwingi level IV hospital',
+  address: 'Along Mwingi Level IV Hospital, Mwingi, Kitui County, Kenya',
   currency: 'KSh',
   hours: {
     weekdays: '7:30 AM – 9:00 PM',
@@ -218,54 +227,44 @@ export const INITIAL_BARBERS: Barber[] = [
 
 export const INITIAL_GALLERY: GalleryItem[] = [
   {
-    id: 'gal-crew',
-    title: 'The Master Artisan Workers & Grooming Team',
+    id: 'gal-team',
+    title: 'The Master Crew: 4 Kenyan Barbers in Signature Uniforms',
     category: 'facials',
-    categoryLabel: 'The Master Crew',
-    barberName: 'The Full Team',
-    image: BARBERSHOP_WORKERS_CREW_IMAGE,
-    description: 'Our licensed master barbers, stylists, and grooming aestheticians on shift at Mwingi Home Boyz Cut.',
-    productUsed: 'Gold Mechanical Razor & Organic Balm'
+    categoryLabel: 'Mwingi Team',
+    barberName: 'Resident Master Barbers',
+    image: '/team.jpg',
+    description: 'Our executive 4-man master barber team in black leather and gold embroidered Mwingi Home Boyz aprons.',
+    productUsed: 'Precision Gold Shears & Clippers'
   },
   {
-    id: 'gal-1',
-    title: 'Clean Low Taper Fade & 360 Deep Waves',
+    id: 'gal-shop',
+    title: 'Luxury Black & Gold Executive Barbershop Interior',
+    category: 'facials',
+    categoryLabel: 'Lounge Interior',
+    barberName: 'Executive Suite',
+    image: '/shop.jpg',
+    description: 'World-class 4-chair executive barbershop in Mwingi with polished black marble, gold accents, and warm ambient glow.',
+    productUsed: 'UV Sterilization Station'
+  },
+  {
+    id: 'gal-cut',
+    title: 'Precision Fresh Fade Haircut & Razor Lineup in Progress',
+    category: 'fades',
+    categoryLabel: 'Fresh Fade Cut',
+    barberName: 'Lead Fade Specialist',
+    image: '/cut.jpg',
+    description: 'Close-up craftsmanship: surgical skin fade and millimeter beard lineup using gold-plated clippers.',
+    productUsed: 'Home Boyz Wave Pomade & Razor Finish'
+  },
+  {
+    id: 'gal-waves',
+    title: 'Executive Skin Taper & Deep 360 Waves',
     category: 'fades',
     categoryLabel: 'Precision Fades',
     barberName: 'Banner Mwangi',
-    image: WAVES_FADE_IMAGE,
-    description: 'Surgical hairline edge-up with deep crown waves and smooth taper down the sideburns.',
-    productUsed: 'Home Boyz Wave Pomade'
-  },
-  {
-    id: 'gal-2',
-    title: 'Hot Towel Beard Detailing & Razor Lineup',
-    category: 'beard',
-    categoryLabel: 'Beard Sculpting',
-    barberName: 'Brian Musyoka',
-    image: BEARD_GROOMING_IMAGE,
-    description: 'Steamed herbal towel application and mirror-straight razor cheek contouring.',
-    productUsed: 'Mwingi Sandalwood Beard Oil'
-  },
-  {
-    id: 'gal-3',
-    title: 'High-Fashion African Executive Fade',
-    category: 'fades',
-    categoryLabel: 'Precision Fades',
-    barberName: 'Kelvin Mutua',
-    image: HERO_IMAGE,
-    description: 'High skin fade connected to sculpted beard with sharp razor cheek lines.',
-    productUsed: 'Matte Styling Clay'
-  },
-  {
-    id: 'gal-4',
-    title: 'Master Craftsman Station at Mwingi Lounge',
-    category: 'facials',
-    categoryLabel: 'Crew at Work',
-    barberName: 'The Crew',
-    image: BARBER_WORKER_PORTRAIT_IMAGE,
-    description: 'Professional barber tools, sterilized blades, and welcoming atmosphere.',
-    productUsed: 'Sterilized Feather Blades'
+    image: '/cut.jpg',
+    description: 'Crisp temple taper and surgical edging with smooth gradient transitions on African texture.',
+    productUsed: 'Organic Argan Finishing Mist'
   }
 ];
 

@@ -171,6 +171,9 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
                         src={item.product.image}
                         alt={item.product.name}
                         referrerPolicy="no-referrer"
+                        onError={(e) => {
+                          e.currentTarget.src = '/shop.jpg';
+                        }}
                         className="w-16 h-16 rounded-lg object-cover bg-zinc-900 shrink-0"
                       />
                       <div className="flex-1 min-w-0">

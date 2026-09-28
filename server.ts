@@ -195,13 +195,76 @@ let loyaltyProfiles: Record<string, LoyaltyProfile> = { ...SAMPLE_LOYALTY_PROFIL
 
 // Active admin session tokens
 const validSessionTokens = new Set<string>();
+const validStaffTokens = new Set<string>();
+
+const STAFF_ADMIN_PASSWORD = process.env.STAFF_ADMIN_PASSWORD || 'mwingi2024';
+
+// In-memory brute force protection
+interface RateLimitRecord {
+  attempts: number;
+  lastAttempt: number;
+  lockedUntil?: number;
+}
+const authRateLimits = new Map<string, RateLimitRecord>();
+
+function checkRateLimit(ip: string, maxAttempts = 5, windowMs = 15 * 60 * 1000): { allowed: boolean; waitSec: number } {
+  const now = Date.now();
+  const record = authRateLimits.get(ip) || { attempts: 0, lastAttempt: now };
+
+  if (record.lockedUntil && now < record.lockedUntil) {
+    return { allowed: false, waitSec: Math.ceil((record.lockedUntil - now) / 1000) };
+  }
+
+  if (now - record.lastAttempt > windowMs) {
+    record.attempts = 0;
+    delete record.lockedUntil;
+  }
+
+  return { allowed: true, waitSec: 0 };
+}
+
+function recordFailedAttempt(ip: string, maxAttempts = 5, lockDurationMs = 15 * 60 * 1000) {
+  const now = Date.now();
+  const record = authRateLimits.get(ip) || { attempts: 0, lastAttempt: now };
+  record.attempts += 1;
+  record.lastAttempt = now;
+  if (record.attempts >= maxAttempts) {
+    record.lockedUntil = now + lockDurationMs;
+  }
+  authRateLimits.set(ip, record);
+}
+
+function resetRateLimit(ip: string) {
+  authRateLimits.delete(ip);
+}
+
+function timingSafeMatch(a: string, b: string): boolean {
+  try {
+    const bufA = Buffer.from(a);
+    const bufB = Buffer.from(b);
+    if (bufA.length !== bufB.length) return false;
+    return crypto.timingSafeEqual(bufA, bufB);
+  } catch {
+    return false;
+  }
+}
 
 async function startServer() {
   const app = express();
   app.disable('x-powered-by');
   const PORT = process.env.PORT || 3000;
 
-  app.use(express.json());
+  // Security HTTP Headers
+  app.use((_req: Request, res: Response, next: NextFunction) => {
+    res.setHeader('X-Content-Type-Options', 'nosniff');
+    res.setHeader('X-Frame-Options', 'SAMEORIGIN');
+    res.setHeader('X-XSS-Protection', '1; mode=block');
+    res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+    res.setHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
+    next();
+  });
+
+  app.use(express.json({ limit: '1mb' }));
 
   // --- Auth Middleware for Protected Admin Routes ---
   const requireAdmin = (req: Request, res: Response, next: NextFunction) => {
@@ -216,14 +279,23 @@ async function startServer() {
     next();
   };
 
-  // --- 1. Admin Authentication ---
+  // --- 1. Admin Authentication with High Security & Brute-Force Rate Limiting ---
   app.post('/api/auth/admin-login', (req: Request, res: Response) => {
+    const ip = req.ip || req.socket.remoteAddress || 'unknown-client';
+    const rateCheck = checkRateLimit(ip, 5, 15 * 60 * 1000);
+    if (!rateCheck.allowed) {
+      return res.status(429).json({
+        success: false,
+        error: `Too many failed attempts. Terminal locked for security. Try again in ${rateCheck.waitSec} seconds.`
+      });
+    }
+
     const { email, pin } = req.body;
-    if (
-      email &&
-      email.toLowerCase().trim() === ADMIN_CREDENTIALS.email.toLowerCase() &&
-      pin === ADMIN_CREDENTIALS.pin
-    ) {
+    const isEmailValid = email && email.toLowerCase().trim() === ADMIN_CREDENTIALS.email.toLowerCase();
+    const isPinValid = pin && timingSafeMatch(String(pin).trim(), ADMIN_CREDENTIALS.pin);
+
+    if (isEmailValid && isPinValid) {
+      resetRateLimit(ip);
       const sessionToken = 'adm_' + crypto.randomBytes(24).toString('hex');
       validSessionTokens.add(sessionToken);
       return res.json({
@@ -236,7 +308,36 @@ async function startServer() {
         }
       });
     }
+
+    recordFailedAttempt(ip, 5, 15 * 60 * 1000);
     return res.status(401).json({ success: false, error: 'Invalid executive credentials or security PIN' });
+  });
+
+  // --- 1b. Staff Administration Login with High Security ---
+  app.post('/api/auth/staff-admin-login', (req: Request, res: Response) => {
+    const ip = req.ip || req.socket.remoteAddress || 'unknown-client';
+    const rateCheck = checkRateLimit(`staff_${ip}`, 5, 15 * 60 * 1000);
+    if (!rateCheck.allowed) {
+      return res.status(429).json({
+        success: false,
+        error: `Too many incorrect attempts. Staff portal locked for security. Try again in ${rateCheck.waitSec} seconds.`
+      });
+    }
+
+    const { password } = req.body;
+    if (password && timingSafeMatch(String(password).trim(), STAFF_ADMIN_PASSWORD)) {
+      resetRateLimit(`staff_${ip}`);
+      const staffToken = 'stf_' + crypto.randomBytes(24).toString('hex');
+      validStaffTokens.add(staffToken);
+      return res.json({
+        success: true,
+        token: staffToken,
+        role: 'Staff Administrator'
+      });
+    }
+
+    recordFailedAttempt(`staff_${ip}`, 5, 15 * 60 * 1000);
+    return res.status(401).json({ success: false, error: 'Invalid password. Authorized Mwingi management only.' });
   });
 
   app.post('/api/auth/verify', (req: Request, res: Response) => {
@@ -733,6 +834,17 @@ async function startServer() {
   });
 
   // --- Static Production Serving or Vite Dev Middleware ---
+  const publicPath = path.resolve(process.cwd(), 'public');
+  app.use(express.static(publicPath, {
+    maxAge: '1d',
+    etag: true,
+    setHeaders: (res, filePath) => {
+      if (/\.(jpg|jpeg|png|webp|svg|ico)$/i.test(filePath)) {
+        res.setHeader('Cache-Control', 'public, max-age=86400, stale-while-revalidate=604800');
+      }
+    }
+  }));
+
   const distPath = path.resolve(process.cwd(), 'dist');
   if (process.env.NODE_ENV === 'production') {
     app.use(express.static(distPath, {
@@ -750,6 +862,14 @@ async function startServer() {
     });
     app.use(vite.middlewares);
   }
+
+  // Global Error Handler to avoid leaking internal error stack traces
+  app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
+    console.error('Handled application error:', err?.message || err);
+    res.status(500).json({
+      error: 'An internal error occurred. Request terminated securely.'
+    });
+  });
 
   app.listen(Number(PORT), '0.0.0.0', () => {
     console.log(`Luxury Barbershop App & Secure API listening on http://0.0.0.0:${PORT}`);

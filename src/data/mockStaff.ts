@@ -177,7 +177,7 @@ export const INITIAL_DAY_OFF_REQUESTS: StaffDayOffRequest[] = [
     staffId: 'staff-3',
     staffName: 'Brian Musyoka',
     date: '2026-09-25',
-    reason: 'Personal errands in Nairobi',
+    reason: 'Personal errands in Mwingi',
     status: 'approved',
     requestedAt: '2026-09-21T10:00:00.000Z',
     respondedAt: '2026-09-21T12:00:00.000Z'
