@@ -1,12 +1,11 @@
 import React from 'react';
-import { Sparkles, ShieldCheck, Scissors, Award, MapPin, Camera } from 'lucide-react';
+import { Sparkles, ShieldCheck, Scissors, Award, MapPin } from 'lucide-react';
 
 interface ExecutiveVisualShowcaseProps {
   onBookNow?: () => void;
-  onOpenPhotoUpload?: () => void;
 }
 
-export const ExecutiveVisualShowcase: React.FC<ExecutiveVisualShowcaseProps> = ({ onBookNow, onOpenPhotoUpload }) => {
+export const ExecutiveVisualShowcase: React.FC<ExecutiveVisualShowcaseProps> = ({ onBookNow }) => {
   return (
     <section className="py-16 bg-[#0B0B0E] relative z-10 border-b border-zinc-800/80">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -67,27 +66,14 @@ export const ExecutiveVisualShowcase: React.FC<ExecutiveVisualShowcaseProps> = (
                   </p>
                 </div>
 
-                <div className="flex flex-wrap items-center gap-2.5 shrink-0 self-start sm:self-auto">
-                  {onOpenPhotoUpload && (
-                    <button
-                      onClick={onOpenPhotoUpload}
-                      className="px-4 py-2.5 rounded-xl border border-[#DFB76C]/40 bg-[#DFB76C]/10 hover:bg-[#DFB76C]/20 text-[#DFB76C] font-semibold text-xs tracking-wider uppercase transition-all flex items-center gap-1.5 cursor-pointer shadow-sm"
-                      title="Upload and replace website photos with your real WhatsApp photos"
-                    >
-                      <Camera className="w-3.5 h-3.5" />
-                      <span>Upload Real Photos</span>
-                    </button>
-                  )}
-
-                  {onBookNow && (
-                    <button
-                      onClick={onBookNow}
-                      className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#C5A059] to-[#DFB76C] text-black font-semibold text-xs tracking-wider uppercase hover:opacity-95 shadow-lg shadow-[#C5A059]/20 transition-all cursor-pointer"
-                    >
-                      Reserve A Chair
-                    </button>
-                  )}
-                </div>
+                {onBookNow && (
+                  <button
+                    onClick={onBookNow}
+                    className="self-start sm:self-auto px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#C5A059] to-[#DFB76C] text-black font-semibold text-xs tracking-wider uppercase hover:opacity-95 shadow-lg shadow-[#C5A059]/20 transition-all cursor-pointer shrink-0"
+                  >
+                    Reserve A Chair
+                  </button>
+                )}
               </div>
             </div>
           </div>

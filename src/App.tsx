@@ -38,7 +38,6 @@ import { Footer } from './components/Footer.tsx';
 // New Staff Management System components
 import { PublicClockPage } from './components/PublicClockPage.tsx';
 import { AdminStaffPage } from './components/AdminStaffPage.tsx';
-import { PhotoUploadModal } from './components/PhotoUploadModal.tsx';
 
 export default function App() {
   const [services, setServices] = useState<Service[]>(INITIAL_SERVICES);
@@ -106,7 +105,6 @@ export default function App() {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isTrackingOpen, setIsTrackingOpen] = useState(false);
   const [isAdminOpen, setIsAdminOpen] = useState(false);
-  const [isPhotoUploadOpen, setIsPhotoUploadOpen] = useState(false);
 
   // Sync cart to localStorage
   useEffect(() => {
@@ -271,7 +269,6 @@ export default function App() {
         }}
         onOpenTracking={() => setIsTrackingOpen(true)}
         onOpenAdmin={() => setIsAdminOpen(true)}
-        onOpenPhotoUpload={() => setIsPhotoUploadOpen(true)}
         onNavigateClock={() => navigateTo('clock')}
         onNavigateAdminStaff={() => navigateTo('admin-staff')}
         activeGroupTab={activeGroupSection}
@@ -312,7 +309,6 @@ export default function App() {
               setPreSelectedService(null);
               setIsBookingOpen(true);
             }}
-            onOpenPhotoUpload={() => setIsPhotoUploadOpen(true)}
           />
         )}
 
@@ -369,7 +365,6 @@ export default function App() {
       <Footer
         onOpenAdmin={() => setIsAdminOpen(true)}
         onOpenBooking={() => setIsBookingOpen(true)}
-        onOpenPhotoUpload={() => setIsPhotoUploadOpen(true)}
         onNavigateClock={() => navigateTo('clock')}
         onNavigateAdminStaff={() => navigateTo('admin-staff')}
       />
@@ -414,11 +409,6 @@ export default function App() {
         onClose={() => setIsAdminOpen(false)}
         appointments={appointments}
         onUpdateAppointmentStatus={handleUpdateAppointmentStatus}
-      />
-
-      <PhotoUploadModal
-        isOpen={isPhotoUploadOpen}
-        onClose={() => setIsPhotoUploadOpen(false)}
       />
 
       {/* Persistent WhatsApp Concierge DM Button */}
